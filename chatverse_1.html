@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💬 ChatVerse</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#1b1340;--bg2:#2b1a6b;--ink:#fff;--glass:rgba(255,255,255,.12);--line:rgba(255,255,255,.22);--pink:#ff5d8f;--yellow:#ffd93d;--green:#2ee59d;--blue:#38bdf8;--violet:#a78bfa}
+body.light{--bg1:#fff1f7;--bg2:#e6f3ff;--ink:#241a4d;--glass:rgba(255,255,255,.75);--line:rgba(36,26,77,.14)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Poppins,sans-serif;color:var(--ink);min-height:100vh;background:linear-gradient(135deg,var(--bg1),var(--bg2)) fixed;overflow-x:hidden;line-height:1.6}
+body::before,body::after{content:'';position:fixed;border-radius:50%;filter:blur(90px);opacity:.5;pointer-events:none;z-index:-1;animation:fl 14s ease-in-out infinite alternate}
+body::before{width:420px;height:420px;background:var(--pink);top:-120px;left:-100px}
+body::after{width:460px;height:460px;background:var(--blue);bottom:-150px;right:-120px;animation-delay:-6s}
+@keyframes fl{to{transform:translate(80px,60px) scale(1.2)}}
+header{position:sticky;top:0;z-index:50;display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;justify-content:space-between;padding:.8rem 1.4rem;background:var(--glass);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.logo{font:700 1.7rem Fredoka,sans-serif}
+nav{display:flex;gap:.3rem;flex-wrap:wrap}
+nav button,.pill{border:none;background:none;color:var(--ink);font:500 .95rem Poppins,sans-serif;padding:.55rem 1.1rem;border-radius:50px;cursor:pointer;transition:.25s}
+nav button:hover,nav button.on{background:linear-gradient(45deg,var(--pink),var(--violet));color:#fff;box-shadow:0 6px 20px rgba(255,93,143,.4)}
+.pill{background:var(--glass);border:1px solid var(--line);cursor:default;font-size:.85rem}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);margin-right:.35rem}
+main{max-width:1100px;margin:0 auto;padding:2rem 1.2rem 4rem}
+.page{display:none}.page.on{display:block;animation:in .4s}
+@keyframes in{from{opacity:0;transform:translateY(12px)}}
+h2.t{font:700 clamp(2rem,5vw,3.4rem)/1.1 Fredoka,sans-serif;text-align:center;margin-bottom:.5rem;background:linear-gradient(90deg,var(--yellow),var(--pink),var(--blue),var(--green),var(--yellow));background-size:300%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sh 8s linear infinite}
+@keyframes sh{to{background-position:300% 0}}
+.sub{text-align:center;opacity:.85;margin-bottom:2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.3rem}
+.tile{height:200px;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;cursor:pointer;font:600 1.6rem Fredoka,sans-serif;transition:.25s;box-shadow:0 16px 36px rgba(0,0,0,.25)}
+.tile span{font-size:3.4rem;transition:.3s}.tile:hover{transform:translateY(-10px) rotate(-1deg)}.tile:hover span{transform:scale(1.25) rotate(-8deg)}
+.c1{background:linear-gradient(135deg,#ff6b6b,#ee3d6c)}.c2{background:linear-gradient(135deg,#38bdf8,#4f6bff)}.c3{background:linear-gradient(135deg,#2ee59d,#0ab3a1)}.c4{background:linear-gradient(135deg,#c084fc,#7c3aed)}.c5{background:linear-gradient(135deg,#ffd93d,#ff9f1c);color:#3a2300}
+.stats{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin:1.5rem 0 2.2rem}
+.stats div{min-width:150px;text-align:center;padding:.8rem 1.4rem;border-radius:20px;background:var(--glass);border:1px solid var(--line)}
+.stats b{display:block;font:700 1.9rem Fredoka,sans-serif}.stats small{opacity:.8}
+.box{background:var(--glass);border:1px solid var(--line);border-radius:26px;padding:1.6rem;backdrop-filter:blur(16px)}
+.box h3{font:600 1.4rem Fredoka,sans-serif;margin-bottom:.8rem}
+input,textarea{width:100%;padding:.8rem 1rem;border-radius:14px;border:1px solid var(--line);background:var(--glass);color:var(--ink);font:inherit}
+textarea{min-height:110px;resize:vertical}
+.btn{border:none;padding:.75rem 1.5rem;border-radius:50px;font:600 .95rem Poppins,sans-serif;color:#fff;cursor:pointer;background:linear-gradient(45deg,var(--pink),var(--violet));transition:.2s}
+.btn:hover{transform:scale(1.05)}.btn:disabled{opacity:.5}.btn.g{background:linear-gradient(45deg,#2ee59d,#0ab3a1)}
+.row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin:.7rem 0}
+.big{font:700 2.6rem Fredoka,sans-serif;text-align:center}
+.mt{margin-top:1.2rem}
+.calc{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-top:.8rem}
+.calc button{height:52px;border:none;border-radius:14px;font:600 1.15rem Poppins;cursor:pointer;background:var(--glass);color:var(--ink);border:1px solid var(--line)}
+.calc .op{background:linear-gradient(45deg,var(--pink),var(--violet));color:#fff}.calc .eq{background:linear-gradient(45deg,#2ee59d,#0ab3a1);color:#fff;grid-column:span 2}
+.chat{height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:.5rem;padding:.4rem}
+.m{max-width:80%;padding:.55rem .9rem;border-radius:16px;background:var(--glass);border:1px solid var(--line);word-break:break-word}
+.m.me{align-self:flex-end;background:linear-gradient(45deg,var(--pink),var(--violet));color:#fff}.m small{display:block;opacity:.7;font-size:.7rem}
+.lb li{display:flex;justify-content:space-between;padding:.4rem .2rem;border-bottom:1px solid var(--line);list-style:none}
+.note{display:flex;justify-content:space-between;gap:1rem;padding:.7rem;border-radius:14px;background:var(--glass);border:1px solid var(--line);margin-top:.6rem}
+.toast{position:fixed;bottom:28px;left:50%;transform:translate(-50%,120px);background:#fff;color:#241a4d;padding:.85rem 1.5rem;border-radius:50px;font-weight:600;box-shadow:0 12px 30px rgba(0,0,0,.35);transition:.4s;z-index:99}.toast.show{transform:translate(-50%,0)}
+.cf{position:fixed;top:-20px;width:10px;height:14px;z-index:98;pointer-events:none;animation:fa linear forwards}@keyframes fa{to{transform:translateY(110vh) rotate(720deg)}}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important}}
+.cop .cl{max-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:.5rem;margin-bottom:.6rem}
+.m a{color:var(--yellow)}.btn.sm{padding:.3rem .8rem;font-size:.75rem;margin-top:.4rem}
+.media{border-radius:20px;overflow:hidden;background:var(--glass);border:1px solid var(--line)}.media img,.media video{width:100%;height:200px;object-fit:cover;display:block}.media p{padding:.5rem .8rem;font-size:.8rem;display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+dialog{margin:auto;padding:1.5rem;width:min(380px,92vw);border:1px solid var(--line);border-radius:24px;background:var(--bg2);color:var(--ink)}dialog::backdrop{background:rgba(0,0,0,.65)}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">💬 ChatVerse</div>
+  <nav id="nav">
+    <button data-p="home" class="on">Home</button><button data-p="notes">Notes</button><button data-p="games">Games</button>
+    <button data-p="tools">Tools</button><button data-p="chat">Chats</button><button data-p="contact">Contact</button><button data-p="admin" id="adminTab" style="display:none">🛡 Admin</button>
+  </nav>
+  <div class="row" style="margin:0"><span class="pill"><i class="dot"></i><b id="live">–</b> online</span><button class="pill" id="lock" style="cursor:pointer">🔐 Admin</button><button class="pill" id="theme" style="cursor:pointer">🌙</button></div>
+</header>
+
+<main>
+<!-- HOME -->
+<section class="page on" id="home">
+  <h2 class="t" id="hello">Welcome to ChatVerse</h2>
+  <p class="sub">Notes, games, tools and chat, all in one place. Click a card to start!</p>
+  <div class="stats"><div><b id="visits">–</b><small>Total visits</small></div><div><b id="mcount">–</b><small>Chat messages</small></div></div>
+  <div class="grid">
+    <div class="tile c1" data-go="notes"><span>📘</span>Notes</div>
+    <div class="tile c2" data-go="games"><span>🎮</span>Games</div>
+    <div class="tile c3" data-go="tools"><span>🤖</span>Tools</div>
+    <div class="tile c4" data-go="contact"><span>📞</span>Contact</div>
+    <div class="tile c5" data-go="chat"><span>💬</span>Chats</div>
+  </div>
+  <div class="row mt" style="justify-content:center"><button class="btn" id="party">🎉 Click Me</button></div>
+  <div class="cop mt"></div>
+</section>
+
+<!-- NOTES -->
+<section class="page" id="notes">
+  <h2 class="t">📘 Notes & Media</h2><p class="sub">Write a text note or upload photos and videos. Uploads are saved to the backend.</p>
+  <div class="grid">
+    <div class="box"><h3>✍️ Text note</h3><input id="nTitle" placeholder="Title" maxlength="80"><textarea id="nBody" class="mt" placeholder="Write here..."></textarea>
+    <div class="row"><button class="btn" id="nAdd">Save note</button></div><div id="nList"></div></div>
+    <div class="box"><h3>📤 Photo / Video upload</h3><input type="file" id="upF" accept="image/*,video/*" multiple>
+    <div class="row"><button class="btn" id="upB">Upload</button></div><p id="upS"></p><small>Max 50MB per file. Everyone can see uploads.</small></div>
+  </div>
+  <h3 class="mt" style="font:600 1.4rem Fredoka,sans-serif">🖼 Uploaded media</h3><div class="grid mt" id="media"></div>
+</section>
+
+<!-- GAMES -->
+<section class="page" id="games">
+  <h2 class="t">🎮 Study Games</h2><p class="sub">Math Master (leaderboard saved in Firebase) and Rock Paper Scissors.</p>
+  <div class="grid">
+    <div class="box"><h3>➗ Math Master</h3>
+      <div class="row"><input id="pName" placeholder="Your name" maxlength="20" style="flex:1"><button class="btn" id="mStart">Start 30s</button></div>
+      <div class="row" style="justify-content:space-between"><span>⏱ <b id="mTime">30</b>s</span><span>⭐ <b id="mScore">0</b></span></div>
+      <div class="big" id="mQ">–</div>
+      <input id="mAns" type="number" placeholder="Answer + Enter" disabled class="mt">
+    </div>
+    <div class="box"><h3>🏆 Top 5</h3><ol class="lb" id="lb"></ol></div>
+    <div class="box"><h3>✊ Rock Paper Scissors</h3>
+      <div class="row" style="justify-content:center"><button class="btn" data-rps="0">✊</button><button class="btn" data-rps="1">✋</button><button class="btn" data-rps="2">✌️</button></div>
+      <div class="big" id="rOut">Play your move</div><p style="text-align:center">You <b id="rU">0</b> : <b id="rC">0</b> Comp</p>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="page" id="tools">
+  <h2 class="t">🤖 Smart Tools</h2><p class="sub">Free tools to help you study.</p>
+  <div class="grid">
+    <div class="box"><h3>🧮 Calculator</h3><input id="cd" readonly placeholder="0" style="text-align:right;font-size:1.6rem"><div class="calc" id="calc"></div></div>
+    <div class="box"><h3>⏱ Study Timer</h3><div class="big" id="tv">25:00</div>
+      <div class="row" style="justify-content:center"><button class="btn g" id="tGo">Start</button><button class="btn" id="tReset">Reset</button><button class="btn" id="tBreak">Break 5m</button></div></div>
+    <div class="box"><h3>🔐 Password Generator</h3><input id="pw" readonly><div class="row"><input id="pl" type="number" value="14" min="6" max="40" style="width:90px"><button class="btn" id="pg">Generate</button><button class="btn g" id="pc">Copy</button></div></div>
+    <div class="box"><h3>🎂 Age Calculator</h3><input id="dob" type="date"><div class="row"><button class="btn" id="ag">Calculate</button></div><p id="ao"></p></div>
+  </div>
+  <div class="box mt"><h3>📤 Photo / Video Upload</h3><p class="sub" style="margin-bottom:.8rem">Go to Notes to upload a photo or video. It is saved to the backend.</p><button class="btn" data-go="notes">Upload now</button></div>
+  <div class="cop mt"></div>
+</section>
+
+<!-- CHAT -->
+<section class="page" id="chat">
+  <h2 class="t">💬 QuickChat</h2><p class="sub">Live chat with everyone. Enter a name and send.</p>
+  <div class="box"><div class="chat" id="cLog"></div>
+  <div class="row"><input id="cUser" placeholder="Name" maxlength="20" style="width:140px"><input id="cMsg" placeholder="Message..." maxlength="500" style="flex:1"><button class="btn" id="cSend">Send</button></div></div>
+  <div class="cop mt"></div>
+</section>
+
+<!-- CONTACT -->
+<section class="page" id="contact">
+  <h2 class="t">📞 Contact</h2><p class="sub">Having any issue? Email us: <a href="mailto:rudrapratapyadav461@gmail.com?subject=ChatVerse%20Issue" style="color:var(--yellow)">rudrapratapyadav461@gmail.com</a><br>Or fill in the form below.</p>
+  <form class="box" id="cf" style="max-width:520px;margin:auto;display:grid;gap:.8rem">
+    <input id="fN" placeholder="Name" maxlength="60" required><input id="fE" type="email" placeholder="Email" maxlength="100" required>
+    <textarea id="fM" placeholder="Message" maxlength="1000" required></textarea><button class="btn" id="fB">Send message</button>
+  </form>
+</section>
+<section class="page" id="admin"><h2 class="t">🛡 Admin Panel</h2><p class="sub">For the admin only (rudrapratapyadav461@gmail.com).</p>
+  <div class="row" style="justify-content:center"><button class="btn" id="aClear">🗑 Clear all chats</button><button class="btn g" id="aOut">Logout</button></div>
+  <div class="grid"><div class="box"><h3>💬 Chats</h3><div class="chat" id="aMsgs"></div></div>
+  <div class="box"><h3>🚫 Users</h3><div id="aUsers"></div></div>
+  <div class="box"><h3>📩 Contact messages</h3><div id="aCon"></div></div></div></section>
+</main>
+<p style="text-align:center;opacity:.8;padding:0 1rem 2rem">Any issue? <a href="mailto:rudrapratapyadav461@gmail.com?subject=ChatVerse%20Issue" style="color:var(--yellow)">rudrapratapyadav461@gmail.com</a></p>
+<dialog id="lg"><h3 style="font:600 1.4rem Fredoka,sans-serif;margin-bottom:.8rem">🔐 Admin login</h3><input id="lgE" type="email" value="rudrapratapyadav461@gmail.com" autocomplete="username"><input id="lgP" type="password" placeholder="Password" class="mt" autocomplete="current-password"><div class="row mt"><button class="btn" id="lgGo">Login</button><button class="btn g" id="lgX">Cancel</button></div></dialog>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getDatabase,ref,push,set,onValue,onDisconnect,runTransaction,serverTimestamp,query,orderByChild,limitToLast,limitToFirst,remove,update}
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {getStorage,ref as sRef,uploadBytesResumable,getDownloadURL,deleteObject} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+const app=initializeApp({apiKey:"AIzaSyCy1reCJaNB1aG3UXT8LPpRR-CgQXXAdZ",authDomain:"mychatapp-8ee22.firebaseapp.com",databaseURL:"https://mychatapp-8ee22-default-rtdb.firebaseio.com",projectId:"mychatapp-8ee22",storageBucket:"mychatapp-8ee22.firebasestorage.app",messagingSenderId:"844615179260",appId:"1:844615179260:web:2f197d1d330448c6dff079"});
+const db=getDatabase(app),auth=getAuth(app),storage=getStorage(app);
+const ADMIN="rudrapratapyadav461@gmail.com";
+let isAdmin=false,banned={},offs=[],msgList=[],media=[];
+const $=id=>document.getElementById(id), esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const store={get:(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const toast=m=>{const t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2500)};
+
+const bind=(sel,fn)=>document.querySelectorAll(sel).forEach(b=>b.onclick=()=>fn(b));
+const bk=n=>n.trim().toLowerCase().replace(/[.#$\[\]\/]/g,"_");
+/* Tabs */
+function go(p){if(p==="admin"&&!isAdmin)return;document.querySelectorAll(".page").forEach(s=>s.classList.toggle("on",s.id===p));document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.p===p));scrollTo({top:0,behavior:"smooth"});history.replaceState(null,"","#"+p)}
+document.querySelectorAll("#nav button").forEach(b=>b.onclick=()=>go(b.dataset.p));
+document.querySelectorAll("[data-go]").forEach(t=>t.onclick=()=>go(t.dataset.go));
+if(document.getElementById(location.hash.slice(1)))go(location.hash.slice(1));
+const h=new Date().getHours();$("hello").textContent=(h<12?"Good Morning ☀️":h<17?"Good Afternoon 🌤️":"Good Evening 🌙");
+
+/* Theme + confetti */
+const setTheme=l=>{document.body.classList.toggle("light",l);$("theme").textContent=l?"☀️":"🌙"};setTheme(store.get("ow-light",false));
+$("theme").onclick=()=>{const l=!document.body.classList.contains("light");setTheme(l);store.set("ow-light",l)};
+$("party").onclick=()=>{const c=["#ff5d8f","#ffd93d","#2ee59d","#38bdf8","#a78bfa"];for(let i=0;i<70;i++){const d=document.createElement("div");d.className="cf";d.style.cssText=`left:${Math.random()*100}vw;background:${c[i%5]};animation-duration:${2+Math.random()*2}s`;document.body.appendChild(d);setTimeout(()=>d.remove(),4200)}toast(["You are awesome! 🌟","Topper mode ON 🏆","Keep going 🚀"][Math.floor(Math.random()*3)])};
+
+/* Firebase: visits + presence + message count */
+if(!sessionStorage.getItem("v")){sessionStorage.setItem("v",1);runTransaction(ref(db,"stats/visits"),n=>(n||0)+1).catch(()=>{})}
+onValue(ref(db,"stats/visits"),s=>$("visits").textContent=(s.val()||0).toLocaleString("en-IN"));
+onValue(ref(db,".info/connected"),s=>{if(!s.val())return;const me=push(ref(db,"presence"));onDisconnect(me).remove();set(me,true)});
+onValue(ref(db,"presence"),s=>$("live").textContent=s.size);
+
+/* Notes (local) */
+let notes=store.get("ow-notes",[]);
+function drawNotes(){$("nList").innerHTML=notes.map((n,i)=>`<div class="note"><div><b>${esc(n.t)}</b><br>${esc(n.b)}</div><button class="btn" data-d="${i}">🗑</button></div>`).join("")||'<p class="sub mt">No notes yet. Write your first note!</p>';
+  document.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{notes.splice(+b.dataset.d,1);store.set("ow-notes",notes);drawNotes()})}
+$("nAdd").onclick=()=>{const t=$("nTitle").value.trim(),b=$("nBody").value.trim();if(!t&&!b)return toast("Write something first");notes.unshift({t:t||"Untitled",b});store.set("ow-notes",notes);$("nTitle").value=$("nBody").value="";drawNotes();toast("Note saved")};drawNotes();
+
+/* Math game + leaderboard */
+$("pName").value=store.get("ow-name","");let sc=0,tl=0,tm,ans=0;
+const q=()=>{const a=1+Math.floor(Math.random()*12),b=1+Math.floor(Math.random()*12),o=["+","-","×"][Math.floor(Math.random()*3)];ans=o=="+"?a+b:o=="-"?a-b:a*b;$("mQ").textContent=`${a} ${o} ${b}`};
+$("mStart").onclick=()=>{store.set("ow-name",$("pName").value.trim());sc=0;tl=30;$("mScore").textContent=0;$("mTime").textContent=30;$("mAns").disabled=false;$("mAns").value="";$("mAns").focus();$("mStart").disabled=true;q();
+  tm=setInterval(async()=>{$("mTime").textContent=--tl;if(tl>0)return;clearInterval(tm);$("mAns").disabled=true;$("mStart").disabled=false;$("mQ").textContent="Time up!";
+    const name=$("pName").value.trim()||"Guest";if(sc>0)try{await push(ref(db,"scores"),{name,score:sc,time:serverTimestamp()});toast(`Score ${sc} saved 🏆`)}catch{toast(`Score ${sc} (could not be saved)`)}},1000)};
+$("mAns").onkeydown=e=>{if(e.key!=="Enter")return;if(+e.target.value===ans){$("mScore").textContent=++sc}e.target.value="";q()};
+onValue(query(ref(db,"scores"),orderByChild("score"),limitToLast(5)),s=>{const a=[];s.forEach(c=>a.push(c.val()));a.reverse();$("lb").innerHTML=a.map((r,i)=>`<li><span>${["🥇","🥈","🥉","4.","5."][i]} ${esc(r.name)}</span><b>${esc(r.score)}</b></li>`).join("")||"<li>Be the first player!</li>"});
+let ru=0,rc=0;document.querySelectorAll("[data-rps]").forEach(b=>b.onclick=()=>{const u=+b.dataset.rps,c=Math.floor(Math.random()*3),w=(u-c+3)%3;$("rOut").textContent=w==0?"Draw 🤝":w==1?"You win 🎉":"Comp wins 🤖";if(w==1)$("rU").textContent=++ru;if(w==2)$("rC").textContent=++rc});
+
+/* Tools */
+"C ⌫ / × 7 8 9 - 4 5 6 + 1 2 3 = 0 .".split(" ").forEach(k=>{const b=document.createElement("button");b.textContent=k;if("/×-+⌫C".includes(k)&&k!=="")b.className="op";if(k==="=")b.className="eq";b.onclick=()=>{const d=$("cd");
+  if(k==="C")d.value="";else if(k==="⌫")d.value=d.value.slice(0,-1);else if(k==="="){try{const e=d.value.replace(/×/g,"*");if(!/^[\d+\-*/. ()]+$/.test(e))throw 0;d.value=String(+Function('"use strict";return ('+e+')')().toFixed(8))}catch{d.value="Error"}}else d.value=(d.value==="Error"?"":d.value)+k};$("calc").appendChild(b)});
+let tleft=1500,ti=null;const tdraw=()=>$("tv").textContent=String(Math.floor(tleft/60)).padStart(2,"0")+":"+String(tleft%60).padStart(2,"0");
+$("tGo").onclick=()=>{if(ti){clearInterval(ti);ti=null;$("tGo").textContent="Start";return}$("tGo").textContent="Pause";ti=setInterval(()=>{tleft--;tdraw();if(tleft<=0){clearInterval(ti);ti=null;$("tGo").textContent="Start";toast("⏰ Time is up! Take a break.")}},1000)};
+const setT=s=>{clearInterval(ti);ti=null;tleft=s;$("tGo").textContent="Start";tdraw()};$("tReset").onclick=()=>setT(1500);$("tBreak").onclick=()=>setT(300);
+$("pg").onclick=()=>{const n=Math.min(40,Math.max(6,+$("pl").value||14)),cs="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*?",r=crypto.getRandomValues(new Uint32Array(n));$("pw").value=[...r].map(x=>cs[x%cs.length]).join("")};$("pg").click();
+$("pc").onclick=()=>navigator.clipboard?.writeText($("pw").value).then(()=>toast("Copied ✅"));
+$("ag").onclick=()=>{const v=$("dob").value;if(!v)return toast("Choose a date");const b=new Date(v),n=new Date();let y=n.getFullYear()-b.getFullYear(),m=n.getMonth()-b.getMonth(),d=n.getDate()-b.getDate();if(d<0){m--;d+=new Date(n.getFullYear(),n.getMonth(),0).getDate()}if(m<0){y--;m+=12}
+  let nb=new Date(n.getFullYear(),b.getMonth(),b.getDate());if(nb<n)nb.setFullYear(n.getFullYear()+1);$("ao").textContent=`${y} years, ${m} months, ${d} days • ${Math.floor((n-b)/864e5).toLocaleString("en-IN")} days • Next birthday in ${Math.ceil((nb-n)/864e5)} days 🎂`};
+
+/* Chat (same "messages" path as your QuickChat/admin) */
+$("cUser").value=store.get("ow-name","");
+onValue(query(ref(db,"messages"),limitToLast(60)),s=>{const log=$("cLog"),me=$("cUser").value.trim();let html="";s.forEach(c=>{const m=c.val(),n=m.sender||m.username||m.name||"?";html+=`<div class="m ${n===me?"me":""}"><small>${esc(n)}</small>${esc(m.text||m.message)}</div>`});log.innerHTML=html||'<p class="sub">No messages yet. Send the first one!</p>';log.scrollTop=log.scrollHeight});
+onValue(ref(db,"messages"),s=>$("mcount").textContent=s.size);
+async function send(){const sender=$("cUser").value.trim(),text=$("cMsg").value.trim();if(!sender)return toast("Enter your name first");if(banned[bk(sender)])return toast("The admin has blocked you 🚫");if(!text)return;store.set("ow-name",sender);
+  try{await push(ref(db,"messages"),{sender,text,time:Date.now()});$("cMsg").value=""}catch{toast("Could not send. Please try again")}}
+$("cSend").onclick=send;$("cMsg").onkeydown=e=>{if(e.key==="Enter")send()};
+
+/* Contact */
+$("cf").onsubmit=async e=>{e.preventDefault();$("fB").disabled=true;try{await push(ref(db,"contacts"),{name:$("fN").value.trim(),email:$("fE").value.trim(),message:$("fM").value.trim(),time:serverTimestamp()});e.target.reset();toast("Message sent ✅")}catch{toast("Could not send. Please try again")}$("fB").disabled=false};
+/* ===== AI Copilot (search + solve) ===== */
+const AI_ENDPOINT=""; // optional: your backend URL that returns {answer} (for a real LLM)
+async function ask(q){
+  if(/^[\d+\-*/().\s^%]+$/.test(q)&&/\d/.test(q)){try{return "🧮 "+esc(q)+" = <b>"+(+Function('"use strict";return ('+q.replace(/\^/g,"**")+')')().toFixed(8))+"</b>"}catch{}}
+  if(AI_ENDPOINT){try{const r=await fetch(AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({q})}).then(r=>r.json());if(r.answer)return esc(r.answer).replace(/\n/g,"<br>")}catch{}}
+  const l=/[\u0900-\u097F]/.test(q)?"hi":"en",g=`<a href="https://www.google.com/search?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">Search on Google ↗</a>`;
+  try{
+    const r=await fetch(`https://${l}.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(q)}&srlimit=1&format=json&origin=*`).then(r=>r.json());
+    const t=r.query?.search?.[0]?.title;if(!t)return "No answer found for this question. "+g;
+    const s=await fetch(`https://${l}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(t)}`).then(r=>r.json());
+    return `<b>${esc(s.title)}</b><br>${esc(s.extract)}<br><a href="${esc(s.content_urls.desktop.page)}" target="_blank" rel="noopener">Read more ↗</a> • ${g}`;
+  }catch{return "There is a problem with the internet or search. "+g}
+}
+document.querySelectorAll(".cop").forEach(el=>{
+  el.innerHTML='<div class="box"><h3>🤖 ChatVerse Copilot</h3><div class="cl"><div class="m">Hi! Type any question, topic or math problem and I will search for an answer.</div></div><div class="row"><input placeholder="Ask a question... e.g. photosynthesis, 25*4+10" maxlength="200" style="flex:1"><button class="btn">Ask</button></div></div>';
+  const inp=el.querySelector("input"),cl=el.querySelector(".cl");
+  const go2=async()=>{const q=inp.value.trim();if(!q)return;inp.value="";cl.insertAdjacentHTML("beforeend",`<div class="m me">${esc(q)}</div><div class="m">⏳ Searching...</div>`);cl.scrollTop=cl.scrollHeight;
+    const a=await ask(q);cl.lastElementChild.innerHTML=a;cl.scrollTop=cl.scrollHeight};
+  el.querySelector(".btn").onclick=go2;inp.onkeydown=e=>{if(e.key==="Enter")go2()};
+});
+
+/* ===== Photo / Video upload (Firebase Storage + DB) ===== */
+$("upB").onclick=async()=>{
+  const fs=[...$("upF").files];if(!fs.length)return toast("Choose a file first");$("upB").disabled=true;
+  for(const f of fs){
+    if(!/^(image|video)\//.test(f.type)||f.size>50*1024*1024){toast(f.name+": only photos or videos, max 50MB");continue}
+    const path=`uploads/${Date.now()}_${f.name.replace(/[^\w.-]/g,"_")}`,r=sRef(storage,path);
+    try{
+      await new Promise((ok,no)=>{const t=uploadBytesResumable(r,f);t.on("state_changed",s=>$("upS").textContent=`${f.name}: ${Math.round(s.bytesTransferred/s.totalBytes*100)}%`,no,ok)});
+      await push(ref(db,"uploads"),{name:f.name,url:await getDownloadURL(r),type:f.type.startsWith("video")?"video":"image",path,time:Date.now()});
+      toast(f.name+" uploaded ✅");
+    }catch(e){console.error(e);toast("Upload failed. Turn on Firebase Storage and set the rules.")}
+  }
+  $("upS").textContent="";$("upF").value="";$("upB").disabled=false};
+function drawMedia(){
+  $("media").innerHTML=media.map(m=>`<div class="media">${m.type==="video"?`<video controls preload="metadata" src="${esc(m.url)}"></video>`:`<img loading="lazy" src="${esc(m.url)}" alt="${esc(m.name)}">`}<p><span>${esc(m.name)}</span>${isAdmin?`<button class="btn sm" data-um="${m.key}">🗑</button>`:""}</p></div>`).join("")||'<p class="sub" style="grid-column:1/-1">No photos or videos yet. Upload the first one!</p>';
+  bind("[data-um]",async b=>{const m=media.find(x=>x.key===b.dataset.um);if(!m||!confirm("Delete this media?"))return;try{await deleteObject(sRef(storage,m.path))}catch{}remove(ref(db,"uploads/"+m.key))})}
+onValue(query(ref(db,"uploads"),limitToLast(30)),s=>{media=[];s.forEach(c=>media.push({key:c.key,...c.val()}));media.reverse();drawMedia()});
+
+/* ===== Admin (Firebase Auth + rules) ===== */
+onValue(ref(db,"banned"),s=>{banned=s.val()||{};if(isAdmin)drawUsers()});
+function drawUsers(){
+  const names=[...new Set(msgList.map(m=>m.name))];
+  $("aUsers").innerHTML=names.map(n=>`<div class="note"><span>${esc(n)} ${banned[bk(n)]?"🚫":""}</span><button class="btn sm" data-ban="${esc(n)}">${banned[bk(n)]?"Unblock":"Remove + Block"}</button></div>`).join("")||"No users";
+  bind("[data-ban]",async b=>{const n=b.dataset.ban,k=bk(n);
+    if(banned[k])return remove(ref(db,"banned/"+k));
+    if(!confirm(`"${n}" will be removed and blocked. All their messages will be deleted. Continue?`))return;
+    const u={["banned/"+k]:true};msgList.filter(m=>m.name===n).forEach(m=>u["messages/"+m.key]=null);
+    try{await update(ref(db),u);toast(n+" was removed")}catch{toast("Permission denied. Check your database rules.")}})}
+function startAdmin(){stopAdmin();
+  offs.push(onValue(ref(db,"messages"),s=>{msgList=[];let h="";s.forEach(c=>{const m=c.val(),n=m.sender||m.username||m.name||"?";msgList.push({key:c.key,name:n});h+=`<div class="m"><small>${esc(n)}</small>${esc(m.text||m.message)}<br><button class="btn sm" data-dm="${c.key}">🗑 Delete</button></div>`});
+    $("aMsgs").innerHTML=h||"No chats";bind("[data-dm]",b=>remove(ref(db,"messages/"+b.dataset.dm)));drawUsers()}));
+  offs.push(onValue(ref(db,"contacts"),s=>{let h="";s.forEach(c=>{const m=c.val();h=`<div class="note"><div><b>${esc(m.name)}</b> (${esc(m.email)})<br>${esc(m.message)}</div><button class="btn sm" data-dc="${c.key}">🗑</button></div>`+h});
+    $("aCon").innerHTML=h||"No messages";bind("[data-dc]",b=>remove(ref(db,"contacts/"+b.dataset.dc)))}))}
+function stopAdmin(){offs.forEach(f=>f());offs=[]}
+onAuthStateChanged(auth,u=>{isAdmin=!!u&&u.email===ADMIN;$("adminTab").style.display=isAdmin?"":"none";$("lock").textContent=isAdmin?"🛡 Admin ✓":"🔐 Admin";drawMedia();
+  if(isAdmin)startAdmin();else{stopAdmin();if($("admin").classList.contains("on"))go("home")}});
+$("lock").onclick=()=>isAdmin?go("admin"):$("lg").showModal();
+$("lgX").onclick=()=>$("lg").close();
+const login=async()=>{try{await signInWithEmailAndPassword(auth,$("lgE").value.trim(),$("lgP").value);$("lgP").value="";$("lg").close();toast("Admin logged in ✅");go("admin")}catch{toast("Wrong email or password")}};
+$("lgGo").onclick=login;$("lgP").onkeydown=e=>{if(e.key==="Enter")login()};
+$("aOut").onclick=()=>signOut(auth);
+$("aClear").onclick=async()=>{if(!confirm("Delete all chats?")||!confirm("Are you sure? This cannot be undone."))return;try{await remove(ref(db,"messages"));toast("All chats deleted")}catch{toast("Permission denied. Check your database rules.")}};
+</script>
+</body>
+</html>
